@@ -1,9 +1,8 @@
 package com.ninjapiratestudios.trackercamera;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -11,78 +10,70 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class VideoActivity extends Activity { // implements TextureView.SurfaceTextureListener{
-
+public class VideoActivity extends FragmentActivity { // implements TextureView.SurfaceTextureListener{
+    ViewPager mViewPager;
     Camera camera;
-    //CamPreview camPreview;
     GLCamView glCamView;
     MediaRecorder mediaRecorder;
     Overlay overlay;
     boolean recordingActive;
-    //TextureSurface glTextureSurface;
-    //SurfaceTexture previewTexture;
     FrameLayout preview;
+    int PAGE_NUM = 2;
 
     //buttons
-    Button recordButton;
+    ImageButton recordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_full_video);
+        setContentView(R.layout.activity_init);
 
-        //captureCamera();
-        recordingActive = false;
-        glCamView = new GLCamView(this);
-        //camPreview = new CamPreview(this, camera);
-        /*try {
-            camera.setPreviewDisplay(camPreview.getHolder());
-        }
-        catch(IOException e)
-        {
+        PagerAdapter pagerAdapter = null;
 
-        }*/
-        overlay = new Overlay(this);
-        //preview = (FrameLayout) findViewById(R.id.camera_preview);
-        //preview.addView(glCamView);
-        setContentView(glCamView);
-        //mediaRecorder = new MediaRecorder();
-        //mediaRecorder.setCamera(camera);
-        //mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-        //mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-        //mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        //mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        /*VideoFragment vf = new VideoFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, vf);
+        //fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();*/
+
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(pagerAdapter);
 
 
-        //add the overlay to the content view
-        //addContentView(overlay, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-
-        //buttons
-        /*recordButton = (Button)findViewById(R.id.button_record);
-        recordButton.setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view){
-                        recordToggle();
-                    }
-                });*/
     }
 
     @Override
@@ -106,30 +97,6 @@ public class VideoActivity extends Activity { // implements TextureView.SurfaceT
         } catch (Exception e) {
 
         }
-    }
-
-    private void recordToggle() {
-        //not working - fix later
-        /*if(!recordingActive) {
-            //the following line can be adjusted once we have implemented video quality options in a stored config
-            mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
-            //use google's method of filenaming
-            mediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
-            //mediaRecorder.setPreviewDisplay(camPreview.getHolder().getSurface());
-            try {
-                mediaRecorder.prepare();
-                mediaRecorder.start();
-                recordingActive = true;
-            } catch (IOException e) {
-                Log.d("mediaRecorder start", "Failed to start recorder");
-            }
-        }
-        else{
-            mediaRecorder.stop();
-            mediaRecorder.reset();
-            mediaRecorder.release();
-            recordingActive = false;
-        }*/
     }
 
 
@@ -174,6 +141,68 @@ public class VideoActivity extends Activity { // implements TextureView.SurfaceT
 
         return mediaFile;
     }
+
+    /**
+     * A simple pager adapter that represents 2 Fragment objects, in
+     * sequence.
+     */
+    protected class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                VideoFragment vf = new VideoFragment();
+                return vf;
+            } else{
+                DummyFragment df = new DummyFragment();
+                return df;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_NUM;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return getString(R.string.record_page).toUpperCase(l);
+                case 1:
+                    return getString(R.string.sharing).toUpperCase(l);
+            }
+            return null;
+        }
+    }//ScreeenSlidePagerAdapter
+
+    public static class DummyFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        public static final String ARG_SECTION_NUMBER = "section_number";
+
+        public DummyFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_video,
+                    container, false);
+            //TextView dummyTextView = (TextView) rootView
+            //		.findViewById(R.id.section_label);
+            //dummyTextView.setText("Hello World! " + Integer.toString(getArguments().getInt(
+            //		ARG_SECTION_NUMBER)));
+            return rootView;
+        }
+    }
+
 
     /*@Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
