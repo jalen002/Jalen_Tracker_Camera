@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Tracker Camera</string>
+    <string name="record_page">Recorder</string>
+    <string name="sharing">Sharing</string>
+    <string name="newFrag">New Fragment</string>
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
