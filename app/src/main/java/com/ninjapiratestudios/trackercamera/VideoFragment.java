@@ -36,7 +36,7 @@ import java.util.Locale;
  */
 public class VideoFragment extends Fragment { // implements TextureView.SurfaceTextureListener{
     Camera camera;
-    GLCamView glCamView;
+
     MediaRecorder mediaRecorder;
     Overlay overlay;
     boolean recordingActive;
@@ -49,10 +49,9 @@ public class VideoFragment extends Fragment { // implements TextureView.SurfaceT
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         recordingActive = false;
-        glCamView = new GLCamView(getActivity());
         overlay = new Overlay(getActivity());
         preview = new FrameLayout(getActivity());
-        preview.addView(glCamView);
+
 
         LinearLayout buttonLL = new LinearLayout(getActivity());
         recordButton = new ImageButton(getActivity());

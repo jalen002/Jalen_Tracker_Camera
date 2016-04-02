@@ -1,12 +1,14 @@
 package com.ninjapiratestudios.trackercamera;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,10 +42,9 @@ import java.util.Locale;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class VideoActivity extends FragmentActivity { // implements TextureView.SurfaceTextureListener{
+public class VideoActivity extends FragmentActivity implements ItemFragment.OnListFragmentInteractionListener  { // implements TextureView.SurfaceTextureListener{
     ViewPager mViewPager;
     Camera camera;
-    GLCamView glCamView;
     MediaRecorder mediaRecorder;
     Overlay overlay;
     boolean recordingActive;
@@ -157,8 +158,8 @@ public class VideoActivity extends FragmentActivity { // implements TextureView.
                 VideoFragment vf = new VideoFragment();
                 return vf;
             } else{
-                DummyFragment df = new DummyFragment();
-                return df;
+                ItemFragment iF = new ItemFragment();
+                return iF;
             }
         }
 
@@ -180,60 +181,14 @@ public class VideoActivity extends FragmentActivity { // implements TextureView.
         }
     }//ScreeenSlidePagerAdapter
 
-    public static class DummyFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        public DummyFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_video,
-                    container, false);
-            //TextView dummyTextView = (TextView) rootView
-            //		.findViewById(R.id.section_label);
-            //dummyTextView.setText("Hello World! " + Integer.toString(getArguments().getInt(
-            //		ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-
-    /*@Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        try {
-            Camera.Size previewSize = camera.getParameters().getPreviewSize();
-            //previewTexture = new SurfaceTexture(0);
-            //camera.setPreviewDisplay(holder);
-            //glTextureSurface = new TextureSurface(this, surface, height, width);
-            camera.setPreviewTexture(surface);
-            camera.startPreview();
-            //preview.setSurfaceTexture(glTextureSurface.getVideoTexture());
-
-        } catch (IOException e) {
-            //camera preview error
-        }
-    }
-
     @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+    public void onListFragmentInteraction(File f) {
+        Uri videoUri = Uri.fromFile(f);
+        Intent galleryIntent = new Intent();
+        galleryIntent.setAction(Intent.ACTION_VIEW);
+        galleryIntent.setDataAndType(videoUri, "video/*");
+        galleryIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(galleryIntent);
     }
 
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        camera.stopPreview();
-        camera.release();
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-    }*/
 }

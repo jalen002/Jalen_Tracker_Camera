@@ -169,7 +169,6 @@ public class GLCamView extends GLSurfaceView implements SurfaceTexture.OnFrameAv
         public void release() {
             surfaceTexture.release();
             camera.stopPreview();
-            GLES31.glDeleteTextures(1, textureHandle, 0);
         }
 
         @Override
