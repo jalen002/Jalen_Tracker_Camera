@@ -27,9 +27,7 @@ public class CameraRecorder {
     private String fileName;
 
     /**
-     * Static factory method that gets a reference to the camera, and sets up
-     * the
-     * camera preview.
+     * Static factory method that gets a reference to the camera.
      *
      * @param activity The activity used to access the camera and view
      *                 components.
@@ -42,7 +40,6 @@ public class CameraRecorder {
         if (cameraRecorder.camera == null) {
             return null;
         }
-        cameraRecorder.cameraPreviewSetup();
         return cameraRecorder;
     }
 
@@ -116,6 +113,24 @@ public class CameraRecorder {
     }
 
     /**
+     * Sets the camera preview.
+     *
+     * @param cameraPreview The CameraPreview reference.
+     */
+    public void setCameraPreview(CameraPreview cameraPreview) {
+        this.cameraPreview = cameraPreview;
+    }
+
+    /**
+     * Gets a reference to the camera.
+     *
+     * @return cameraPreview The Camera reference.
+     */
+    public Camera getCamera() {
+        return camera;
+    }
+
+    /**
      * Prepares the camera for recording
      *
      * @throws Exception If there was an error setting up configurations for
@@ -135,8 +150,6 @@ public class CameraRecorder {
         File filesDir = retrieveFileDirectory();
         File videoFile = new File(filesDir.getPath(), fileName + ".mp4");
         mediaRecorder.setOutputFile(videoFile.toString());
-        mediaRecorder.setVideoSize(cameraPreview.getWidth(), cameraPreview
-                .getHeight());
         mediaRecorder.setPreviewDisplay(cameraPreview.getHolder().getSurface());
         Log.i(LOG_TAG, "File saved to: " + videoFile.getPath());
 
@@ -167,6 +180,7 @@ public class CameraRecorder {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
+            Log.i(LOG_TAG, "Acquired camera reference.");
         } catch (Exception e) {
             Log.e(LOG_TAG, "Camera is not available (in use or does not " +
                     "exist)");
@@ -190,13 +204,11 @@ public class CameraRecorder {
     }
 
     /**
-     * Initializes the preview view for the camera.
+     *
      */
-    private void cameraPreviewSetup() {
+    public void cameraPreviewSetup(FrameLayout frameLayout) {
         cameraPreview = new CameraPreview(activity, camera);
-        FrameLayout preview = (FrameLayout) activity.findViewById(R.id
-                .camera_preview);
-        preview.addView(cameraPreview);
-        Log.i(LOG_TAG, "Camera preview setup successful.");
+        frameLayout.addView(cameraPreview);
+        Log.i(LOG_TAG, "Camera preview added to FrameLayout.");
     }
 }
