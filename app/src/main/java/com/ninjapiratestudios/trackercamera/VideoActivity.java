@@ -43,7 +43,6 @@ public class VideoActivity extends FragmentActivity implements
         mViewPager.setAdapter(pagerAdapter);
     }
 
-
     /**
      * Checks to see if the app has been exited due to an Intent to the Gallery.
      *
@@ -51,6 +50,10 @@ public class VideoActivity extends FragmentActivity implements
      */
     public boolean isIntentAppExit() {
         return intentAppExit;
+    }
+
+    public void setIntentAppExit(boolean intentAppExit) {
+        this.intentAppExit = intentAppExit;
     }
 
     /**

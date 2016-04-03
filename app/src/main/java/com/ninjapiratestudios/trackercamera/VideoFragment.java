@@ -61,6 +61,16 @@ public class VideoFragment extends Fragment {
         return preview;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(activity.isIntentAppExit()) {
+            // Allow resources to be released after Gallery app exits
+            activity.setIntentAppExit(false);
+            Log.i(LOG_TAG, "Reset intentAppExit.");
+        }
+    }
+
     /**
      * Releases the Camera resource for other apps.
      */
