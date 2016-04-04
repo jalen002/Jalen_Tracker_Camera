@@ -25,7 +25,7 @@ import java.util.Locale;
  * status bar and navigation/system bar) with user interaction.
  */
 public class VideoActivity extends FragmentActivity implements
-        ItemFragment.OnListFragmentInteractionListener {
+        ItemFragment.OnListFragmentInteractionListener, VideoFragment.OnVideoAddedListener{
     public final static String LOG_TAG = "VIDEO_ACTIVITY";
     private ViewPager mViewPager;
     private int PAGE_NUM = 2;
@@ -37,7 +37,7 @@ public class VideoActivity extends FragmentActivity implements
         setContentView(R.layout.activity_init);
 
         // Setup PagerAdapter for swiping functionality
-        PagerAdapter pagerAdapter = null;
+        PagerAdapter pagerAdapter;
         mViewPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
@@ -61,15 +61,25 @@ public class VideoActivity extends FragmentActivity implements
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
+        private VideoFragment vF;
+        private ItemFragment iF;
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                VideoFragment vf = new VideoFragment();
-                return vf;
+                if(vF == null) {
+                    vF = new VideoFragment();
+                    return vF;
+                } else {
+                    return vF;
+                }
             } else {
-                ItemFragment iF = new ItemFragment();
-                return iF;
+                if(iF == null)
+                {
+                     iF = new ItemFragment();
+                    return iF;
+                } else {
+                    return iF;
+                }
             }
         }
 
@@ -100,5 +110,13 @@ public class VideoActivity extends FragmentActivity implements
         galleryIntent.setDataAndType(videoUri, "video/*");
         galleryIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(galleryIntent);
+    }
+
+    @Override
+    public void onVideoAdded() {
+        Log.i("VideoAdded called", "the OnVideoAdded Callback was called");
+        ScreenSlidePagerAdapter sSPA = (ScreenSlidePagerAdapter) mViewPager.getAdapter();
+        ItemFragment iF = (ItemFragment) sSPA.getItem(1);
+        iF.update();
     }
 }

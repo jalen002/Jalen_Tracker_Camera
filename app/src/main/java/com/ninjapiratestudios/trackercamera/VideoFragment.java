@@ -22,6 +22,7 @@ public class VideoFragment extends Fragment {
     boolean recordingActive;
     private CameraRecorder cameraRecorder;
     private VideoActivity activity;
+    private OnVideoAddedListener vAListener;
 
     //buttons
     ImageButton recordButton;
@@ -29,6 +30,7 @@ public class VideoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        vAListener = (OnVideoAddedListener) context;
         activity = (VideoActivity)getActivity();
         // Prepare camera and OpenGL
         initializeCameraRecorder();
@@ -96,6 +98,16 @@ public class VideoFragment extends Fragment {
             recordButton.setText("Record");*/
             recordButton.setImageResource(R.drawable.record);
             recordingActive = false;
+            vAListener.onVideoAdded();
+
         }
+    }
+
+    /**
+     * A listener that will be used to communicate with the activity when a new video is recorded.
+     */
+    public interface OnVideoAddedListener
+    {
+        void onVideoAdded();
     }
 }
