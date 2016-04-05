@@ -24,10 +24,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     private List<FileContent.FileHolder> mValues;
     private final OnListFragmentInteractionListener mListener;
+    ItemFragment iF;
 
-    public MyItemRecyclerViewAdapter(List<FileContent.FileHolder> items, OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(List<FileContent.FileHolder> items, OnListFragmentInteractionListener listener, ItemFragment iF) {
         mValues = items;
         mListener = listener;
+        this.iF = iF;
     }
 
     @Override
@@ -35,6 +37,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item, parent, false);
         return new ViewHolder(view);
+    }
+
+    public void update()
+    {
+        mValues = iF.getFileContent(true).getItems();
+        this.notifyDataSetChanged();
     }
 
     @Override

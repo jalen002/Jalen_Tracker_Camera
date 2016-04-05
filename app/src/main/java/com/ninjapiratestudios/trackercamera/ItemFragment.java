@@ -29,7 +29,8 @@ public class ItemFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private RecyclerView.Adapter a;
+    private MyItemRecyclerViewAdapter a;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,6 +58,15 @@ public class ItemFragment extends Fragment {
         }
     }
 
+
+    public void update()
+    {
+        FileContent fC = getFileContent(true);
+        a.update();
+        Log.i("DataSetChanged", "The Adapter has been updated");
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,11 +81,10 @@ public class ItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(fC.getItems(), mListener));
+            recyclerView.setAdapter(a = new MyItemRecyclerViewAdapter(fC.getItems(), mListener, this));
         }
         return view;
     }
-
 
     public FileContent getFileContent(boolean external){ //return type FileContent
         File f;
@@ -97,6 +106,7 @@ public class ItemFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
