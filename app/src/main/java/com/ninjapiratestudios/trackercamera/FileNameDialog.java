@@ -77,7 +77,7 @@ public class FileNameDialog extends DialogFragment {
                 container, false);
 
         // Set button listeners
-        v.findViewById(R.id.fn_dialog_save_button).setOnClickListener
+        v.findViewById(R.id.fn_dialog_record_button).setOnClickListener
                 (new ButtonClick());
         v.findViewById(R.id.fn_dialog_cancel_button).setOnClickListener
                 (new ButtonClick());
@@ -131,7 +131,7 @@ public class FileNameDialog extends DialogFragment {
          */
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.fn_dialog_save_button) {
+            if (v.getId() == R.id.fn_dialog_record_button) {
                 // Save was clicked
                 if (!cameraRecorder.isCameraRecording()) {
                     // Validate filename

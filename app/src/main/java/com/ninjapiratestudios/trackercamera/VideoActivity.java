@@ -25,13 +25,12 @@ public class VideoActivity extends FragmentActivity implements
     private ViewPager mViewPager;
     private boolean intentAppExit; // Prevents release of camera resources
     private ImageButton recordButton;
-    private ImageType recordButtonImageType;
+    private boolean stopImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
-        recordButtonImageType = ImageType.BUTTON_IMAGE_RECORD; // default image
 
         // Setup PagerAdapter for swiping functionality
         PagerAdapter pagerAdapter;
@@ -142,15 +141,12 @@ public class VideoActivity extends FragmentActivity implements
      */
     public void toggleRecordButton() {
         if(recordButton != null) {
-            switch (recordButtonImageType) {
-                case BUTTON_IMAGE_RECORD:
-                    recordButtonImageType = ImageType.BUTTON_IMAGE_STOP;
-                    recordButton.setImageResource(R.drawable.stop);
-                    break;
-                case BUTTON_IMAGE_STOP:
-                    recordButtonImageType = ImageType.BUTTON_IMAGE_RECORD;
-                    recordButton.setImageResource(R.drawable.record);
-                    break;
+            if(!stopImage) {
+                stopImage = true;
+                recordButton.setImageResource(R.drawable.stop);
+            } else {
+                stopImage = false;
+                recordButton.setImageResource(R.drawable.record);
             }
         }
     }
