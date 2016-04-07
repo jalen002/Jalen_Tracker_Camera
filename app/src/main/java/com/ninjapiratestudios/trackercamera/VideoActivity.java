@@ -1,12 +1,8 @@
 package com.ninjapiratestudios.trackercamera;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,10 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -28,13 +23,15 @@ public class VideoActivity extends FragmentActivity implements
         ItemFragment.OnListFragmentInteractionListener, VideoFragment.OnVideoAddedListener{
     public final static String LOG_TAG = "VIDEO_ACTIVITY";
     private ViewPager mViewPager;
-    private int PAGE_NUM = 2;
     private boolean intentAppExit; // Prevents release of camera resources
+    private ImageButton recordButton;
+    private ImageType recordButtonImageType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
+        recordButtonImageType = ImageType.BUTTON_IMAGE_RECORD; // default image
 
         // Setup PagerAdapter for swiping functionality
         PagerAdapter pagerAdapter;
@@ -88,7 +85,7 @@ public class VideoActivity extends FragmentActivity implements
 
         @Override
         public int getCount() {
-            return PAGE_NUM;
+            return 2;
         }
 
         @Override
@@ -121,5 +118,40 @@ public class VideoActivity extends FragmentActivity implements
         ScreenSlidePagerAdapter sSPA = (ScreenSlidePagerAdapter) mViewPager.getAdapter();
         ItemFragment iF = (ItemFragment) sSPA.getItem(1);
         iF.update();
+    }
+
+    /**
+     * Getter for the Record Button.
+     * @return a reference to the Record Button.
+     */
+    public ImageButton getRecordButton() {
+        return recordButton;
+    }
+
+    /**
+     * Setter for the new Record Button.
+     * @param recordButton The new Record Button object.
+     */
+    public void setRecordButton(ImageButton recordButton) {
+        this.recordButton = recordButton;
+    }
+
+    /**
+     * Toggles setting the stop.png and record.png image types for<br/>
+     * the Record button
+     */
+    public void toggleRecordButton() {
+        if(recordButton != null) {
+            switch (recordButtonImageType) {
+                case BUTTON_IMAGE_RECORD:
+                    recordButtonImageType = ImageType.BUTTON_IMAGE_STOP;
+                    recordButton.setImageResource(R.drawable.stop);
+                    break;
+                case BUTTON_IMAGE_STOP:
+                    recordButtonImageType = ImageType.BUTTON_IMAGE_RECORD;
+                    recordButton.setImageResource(R.drawable.record);
+                    break;
+            }
+        }
     }
 }

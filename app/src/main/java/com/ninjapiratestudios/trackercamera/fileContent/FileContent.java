@@ -1,6 +1,5 @@
 package com.ninjapiratestudios.trackercamera.fileContent;
 
-import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;

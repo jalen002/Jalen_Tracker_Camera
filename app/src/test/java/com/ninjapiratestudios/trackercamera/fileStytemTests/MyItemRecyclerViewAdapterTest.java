@@ -1,35 +1,15 @@
 package com.ninjapiratestudios.trackercamera.fileStytemTests;
-import android.app.DialogFragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.ninjapiratestudios.trackercamera.ItemFragment;
 import com.ninjapiratestudios.trackercamera.MyItemRecyclerViewAdapter;
 import com.ninjapiratestudios.trackercamera.fileContent.FileContent;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.powermock.api.mockito.PowerMockito;
-import static org.mockito.Mockito.times;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 
-import static org.mockito.BDDMockito.*;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests The recycler View Adapter Class

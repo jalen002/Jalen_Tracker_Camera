@@ -14,18 +14,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * An example full-screen activity that shows and hides the system<br/>
+ * UI (i.e.status bar and navigation/system bar) with user interaction.
  */
 public class VideoFragment extends Fragment {
     public final static String LOG_TAG = "VIDEO_FRAGMENT";
-    boolean recordingActive;
     private CameraRecorder cameraRecorder;
     private VideoActivity activity;
     private OnVideoAddedListener vAListener;
-
-    //buttons
-    ImageButton recordButton;
 
     @Override
     public void onAttach(Context context) {
@@ -44,7 +40,8 @@ public class VideoFragment extends Fragment {
 
         // Add CameraPreview and Record Button to FrameLayout
         cameraRecorder.cameraPreviewSetup(preview);
-        recordButton = new ImageButton(getActivity());
+        activity.setRecordButton(new ImageButton(getActivity()));
+        ImageButton recordButton = activity.getRecordButton();
         recordButton.setImageResource(R.drawable.record);
         recordButton.setBackgroundColor(Color.TRANSPARENT);
         buttonLL.addView(recordButton);
@@ -96,25 +93,23 @@ public class VideoFragment extends Fragment {
     }
 
     private void recordToggle() {
-        if (!recordingActive) {
-            /*recordButton.setBackgroundColor(Color.RED);
-            recordButton.setText("Stop");*/
-            recordButton.setImageResource(R.drawable.stop);
-            recordingActive = true;
+        if (!cameraRecorder.isCameraRecording()) {
+            // Toggle button image and display FileNameDialog
             cameraRecorder.displayFileNameDialog();
-            //preview.removeAllViews();
         } else {
-            /*recordButton.setBackgroundColor(Color.GRAY);
-            recordButton.setText("Record");*/
-            recordButton.setImageResource(R.drawable.record);
-            recordingActive = false;
-            vAListener.onVideoAdded();
+            // Toggle button image and Stop recording
+            cameraRecorder.setCameraRecording(false);
+            activity.toggleRecordButton();
+            cameraRecorder.stopRecording();
 
+            // Refresh file video list
+            vAListener.onVideoAdded();
         }
     }
 
     /**
-     * A listener that will be used to communicate with the activity when a new video is recorded.
+     * A listener that will be used to communicate with the activity when<br/>
+     * a new video is recorded.
      */
     public interface OnVideoAddedListener
     {

@@ -9,16 +9,10 @@ import com.ninjapiratestudios.trackercamera.ItemFragment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.BDDMockito.given;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.io.File;
-
-import static org.mockito.Matchers.any;
 
 /**
  * Tests the Item Frament Class

@@ -1,8 +1,8 @@
 package com.ninjapiratestudios.trackercamera;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +23,7 @@ public class FileNameDialog extends DialogFragment {
     protected final static String FRAGMENT_TAG = "DIALOG_FRAGMENT";
     private EditText editText;
     private CameraRecorder cameraRecorder;
-    private boolean recording;
-
+    private VideoActivity activity;
 
     /**
      * Static factory method that is required for fragments to create new
@@ -37,6 +36,12 @@ public class FileNameDialog extends DialogFragment {
         FileNameDialog fileNameDialog = new FileNameDialog();
         fileNameDialog.cameraRecorder = cameraRecorder;
         return fileNameDialog;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (VideoActivity)activity;
     }
 
     /**
@@ -128,28 +133,21 @@ public class FileNameDialog extends DialogFragment {
         public void onClick(View v) {
             if (v.getId() == R.id.fn_dialog_save_button) {
                 // Save was clicked
-                if (!recording) {
+                if (!cameraRecorder.isCameraRecording()) {
                     // Validate filename
                     String fileName = editText.getText().toString();
                     if (fileNameValidation(fileName)) {
-                        // Begin recording
+                        // Begin recording and dismiss dialog
+                        activity.toggleRecordButton();
+                        cameraRecorder.setCameraRecording(true);
                         cameraRecorder.setFileName(fileName);
-                        recording = true;
                         cameraRecorder.startRecording();
+                        dismiss();
                     }
-                } else {
-                    Log.i(LOG_TAG, "Camera is already recording, " +
-                            "cannot begin recording.");
                 }
             } else { // Cancel was clicked
-                // TODO Put stop functionality inside Jalen's toggle button
-                if (recording) {
-                    recording = false;
-                    cameraRecorder.stopRecording();
-                } else {
-                    Log.i(LOG_TAG, "Camera is currently not recording, and " +
-                            "cannot be stopped.");
-                }
+                // Dismiss Dialog
+                dismiss();
             }
         }
     }

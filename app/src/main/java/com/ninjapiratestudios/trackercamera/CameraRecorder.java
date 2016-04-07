@@ -25,6 +25,7 @@ public class CameraRecorder {
     private MediaRecorder mediaRecorder;
     private VideoActivity activity;
     private String fileName;
+    private boolean recording;
 
     /**
      * Static factory method that gets a reference to the camera.
@@ -113,21 +114,19 @@ public class CameraRecorder {
     }
 
     /**
-     * Sets the camera preview.
-     *
-     * @param cameraPreview The CameraPreview reference.
+     * Checks to see if the Camera is currently recording.
+     * @return Whether or not the Camera is recording.
      */
-    public void setCameraPreview(CameraPreview cameraPreview) {
-        this.cameraPreview = cameraPreview;
+    public boolean isCameraRecording() {
+        return recording;
     }
 
     /**
-     * Gets a reference to the camera.
-     *
-     * @return cameraPreview The Camera reference.
+     * Sets whether or not the camera is recording.
+     * @param recording Whether or not the Camera is recording.
      */
-    public Camera getCamera() {
-        return camera;
+    public void setCameraRecording(boolean recording) {
+        this.recording = recording;
     }
 
     /**

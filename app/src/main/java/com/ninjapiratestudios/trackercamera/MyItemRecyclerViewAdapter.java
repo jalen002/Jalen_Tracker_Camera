@@ -1,6 +1,5 @@
 package com.ninjapiratestudios.trackercamera;
 
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import com.ninjapiratestudios.trackercamera.ItemFragment.OnListFragmentInteracti
 import com.ninjapiratestudios.trackercamera.fileContent.FileContent;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

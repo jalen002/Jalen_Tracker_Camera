@@ -1,7 +1,6 @@
 package com.ninjapiratestudios.trackercamera;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import com.ninjapiratestudios.trackercamera.fileContent.FileContent;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
