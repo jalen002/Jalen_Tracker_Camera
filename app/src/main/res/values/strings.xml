@@ -8,4 +8,7 @@
     <string name="fn_dialog_file_name">Enter Video File Name to Save</string>
     <string name="fn_dialog_record_button">Record</string>
     <string name="fn_dialog_cancel_button">Cancel</string>
+	
+	<!-- App Startup/Setup -->
+	<string name="title_activity_setup">Setup</string>
 </resources>
