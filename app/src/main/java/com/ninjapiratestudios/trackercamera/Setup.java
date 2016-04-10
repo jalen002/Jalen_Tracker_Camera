@@ -28,6 +28,7 @@ import java.util.logging.Handler;
 public class Setup extends Activity {
 
     private Thread setupPage;
+    private Thread bluetoothSetup;
 
 	
 	private static final String TAG = "BluetoothLog";//To isolate
@@ -46,19 +47,20 @@ public class Setup extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_setup);
         startBluetooth();
+        //discoverM(vW);
 
-        setupPage = new Thread(){
+        setupPage = new Thread() {
             @Override
-            public void run(){
-                try{
+            public void run() {
+                try {
                     super.run();
                     getReadPermissions();
                     getCameraPermissions();
                     getAudioPermissions();
-                    sleep(10000);
-                }catch(Exception e){
+                    sleep(65000);
+                } catch (Exception e) {
 
-                }finally{
+                }finally {
                     Intent i = new Intent(Setup.this, VideoActivity.class);
                     startActivity(i);
                     finish();
@@ -67,7 +69,8 @@ public class Setup extends Activity {
         };
         setupPage.start();
     }
-	
+
+
 	public void startBluetooth(){
 	//        Determine if Android supports Bluetooth
 		if (mBluetoothAdapter == null) {
