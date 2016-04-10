@@ -47,7 +47,7 @@ public class Setup extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_setup);
         startBluetooth();
-        //discoverM(vW);
+        discoverM(null);
 
         setupPage = new Thread() {
             @Override
