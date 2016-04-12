@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.logging.Handler;
 
@@ -49,8 +51,11 @@ public class Setup extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_setup);
-        startBluetooth();
-        discoverM(null);
+        if(startBluetooth())
+            discover_helper();
+        else{
+
+        }
 
         setupPage = new Thread() {
             @Override
@@ -60,7 +65,7 @@ public class Setup extends Activity {
                     //getReadPermissions();
                     //getCameraPermissions();
                     //getAudioPermissions();
-                    sleep(65000);
+                    sleep(20000);
                 } catch (Exception e) {
 
                 }finally {
@@ -74,13 +79,14 @@ public class Setup extends Activity {
     }
 
 
-	public void startBluetooth(){
+	public boolean startBluetooth(){
         //Start of bluetooth
         //Determine if Android supports Bluetooth
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
             Toast.makeText(getApplicationContext(), "Your device does not support Bluetooth", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Your device does not support Bluetooth");
+            return false;
         } else {
             Toast.makeText(getApplicationContext(), "Your device support Bluetooth", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Your device support Bluetooth");
@@ -88,16 +94,28 @@ public class Setup extends Activity {
             if (!mBluetoothAdapter.isEnabled()) {
                 int REQUEST_ENABLE_BT = 1;
                 //Prompt the user to enable bluetooth
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                //Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                //startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                mBluetoothAdapter.enable();
                 //or just do this, which does not prompt user to enable the bluetooth it just enables it in the background -> mBluetoothAdapter.enable();
                 Log.d(TAG, "Successfully enabled Bluetooth");
+                return true;
             } else {
                 Log.d(TAG, "Bluetooth is already enabled");
                 Toast.makeText(getApplicationContext(), "Bluetooth is already enabled", Toast.LENGTH_SHORT).show();
+                return true;
             }
         }
 	}
+
+    public void discover_helper(){
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run(){
+                discoverM(null);
+            }
+        }, 1000);
+    }
 
     /**
      * Method that gets called when the discover button is clicked. It will look for any device in the

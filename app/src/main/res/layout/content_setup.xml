@@ -14,15 +14,5 @@
         android:indeterminate="true"
         android:id="@+id/progressBar" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect"
-        android:id="@+id/connectButton"
-        android:layout_above="@+id/progressBar"
-        android:layout_toEndOf="@+id/progressBar"
-        android:onClick="connecting"
-        android:layout_marginBottom="50dp" />
 
 </RelativeLayout>
