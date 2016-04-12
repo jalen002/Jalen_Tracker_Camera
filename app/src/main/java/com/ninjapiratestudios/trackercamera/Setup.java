@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,7 +30,6 @@ import java.util.logging.Handler;
 public class Setup extends Activity {
 
     private Thread setupPage;
-    private Thread bluetoothSetup;
 
 	
 	private static final String TAG = "BluetoothLog";//To isolate
@@ -43,6 +43,7 @@ public class Setup extends Activity {
     final private int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 1;
     final private int CAMERA_PERMISSION_CODE = 2;
     final private int RECORD_AUDIO_PERMISSION_CODE = 3;
+    final private int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,9 @@ public class Setup extends Activity {
             public void run() {
                 try {
                     super.run();
-                    getReadPermissions();
-                    getCameraPermissions();
-                    getAudioPermissions();
+                    //getReadPermissions();
+                    //getCameraPermissions();
+                    //getAudioPermissions();
                     sleep(65000);
                 } catch (Exception e) {
 
@@ -117,8 +118,8 @@ public class Setup extends Activity {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     // Add the name and address to an array adapter to show in a ListView
 //                    if (device.getAddress().equals("FC:F8:AE:36:F4:42")) { //Dean
-//                    if (device.getAddress().equals("00:00:00:00:00:00")) {//Jalen
-                    if (device.getAddress().equals("5C:F3:70:71:A0:B5")) {//Raspberie pi
+                    if (device.getAddress().equals("00:15:83:09:16:B0")) {//Jalen
+//                    if (device.getAddress().equals("5C:F3:70:71:A0:B5")) {//Raspberie pi
 //                            mArrayAdapter.add(device);
                         raspberryPi2 = device;
                         Log.d(TAG, "Device: " + raspberryPi2.getName() + "\n" + raspberryPi2.getAddress());
@@ -292,7 +293,7 @@ public class Setup extends Activity {
         }
     }
 
-
+/*
     public void getReadPermissions() {
         //check for permission
         if (ContextCompat.checkSelfPermission(this,
@@ -315,5 +316,6 @@ public class Setup extends Activity {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, RECORD_AUDIO_PERMISSION_CODE);
         }
     }
+*/
 
 }
